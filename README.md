@@ -46,14 +46,6 @@ This will install all the node modules you require.
 
     gulp
 
-## Modernizr
-
-*If needs be this task can be run using:*
-
-    grunt modernizr
-
-This will build your custom modernizr file based on features you have used in your css and js
-
 ## Installing new packages
 
 **For new Gulp modules run:**
@@ -61,3 +53,9 @@ This will build your custom modernizr file based on features you have used in yo
 	npm install <package name> --save-dev
 
 The flag `--save-dev` will save the version number to package.json so that everyone has the same versions.
+
+##SoundCloud
+
+Authenticating without the SoundCloud Connect Screen
+OAuth User Credentials Flow
+https://soundcloud.com/you/apps/frond-forever/edit

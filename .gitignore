@@ -23,7 +23,10 @@
 *.dbmdl
 *.publishsettings
 
-# Front-end
+# Back end
+authenticate.rb
+
+# Front end
 .sass-cache/
 node_modules/
 src/scripts/modules/request.js
