@@ -1,0 +1,92 @@
+// --------------------------------------------------------------------------
+// Typography
+// --------------------------------------------------------------------------
+// Author:      Zone
+// Email:       frontend@thisiszone.com
+// URL:         http://thisiszone.com
+// Copyright:   Copyright (c) 2015, thisiszone.com. All rights reserved.
+// Version:     1.5
+// --------------------------------------------------------------------------
+
+
+// Typography
+// --------------------------------------------------------------------------
+
+body {
+    color: $color-grey;
+    font-family: $font-body;
+    font-size: $font-size;
+    line-height: $line-height-body;
+}
+
+
+// Generic headline
+.headline {
+    font-size: em(32);
+    line-height: em(26, 32);
+    margin: em(20, 32) 0;
+}
+
+// headline for main content block
+.article__headline {
+    font-size: em(28);
+    line-height: em(28, 28);
+    margin-bottom: em(20, 28);
+}
+
+// sub heading for main content block
+.article__subheading {
+    font-size: em(22);
+    line-height: em(22, 22);
+}
+
+p + .article__headline,
+p + .article__subheading {
+    margin-top: em(20);
+}
+
+
+// Rich Text Editor
+// --------------------------------------------------------------------------
+
+.rte {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: $font-heading;
+        line-height: $line-height-heading;
+        margin-bottom: $spacing;
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    a {
+
+    }
+
+    p + p {
+        margin-top: em(18);
+    }
+
+    blockquote {
+
+    }
+}
+
+
+// Alert
+// --------------------------------------------------------------------------
+
+.alert {
+    padding:$spacing;
+    background:$color-grey;
+    color:white;
+    font-size:1.5em;
+    text-align:center;
+    margin-bottom: $spacing;
+}
