@@ -24,8 +24,7 @@
 *.publishsettings
 
 # Back end
-authenticate.rb
-sc-login.php
+client-data.php
 vendor/
 
 # Front end
