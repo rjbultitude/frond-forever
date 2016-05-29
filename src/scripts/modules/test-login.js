@@ -6,6 +6,7 @@ export default class FetchSounds {
 		console.log(context);
 		var channel = postal.channel();
 
+		//swap for module
 		function makeRequest(method, url) {
 			return new Promise(function(resolve, reject) {
 				var xhr = new XMLHttpRequest();

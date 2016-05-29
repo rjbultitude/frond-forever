@@ -5,10 +5,12 @@ import postal from 'postal';
 export default class FetchSounds {
 
 	constructor(context) {
-		var clientID = 'cc047d47f7bd7e5c1452a5284c3d9d88';
-		var clientIDString = 'client_id=' + clientID;
-		var channel = postal.channel();
-		var $audio = $('audio');
+		const clientID = 'cc047d47f7bd7e5c1452a5284c3d9d88';
+		const clientIDString = 'client_id=' + clientID;
+		const channel = postal.channel();
+		const $audioOne = $('[data-bind="audio-one"]');
+		const $audioTwo = $('[data-bind="audio-two"]');
+		const $messageBlock = $('[data-bind="heading"]');
 
 		function getRandomInt(min, max) {
 			return Math.floor(Math.random() * (max - min)) + min;
@@ -21,24 +23,35 @@ export default class FetchSounds {
 			var trackIndex = getRandomInt(0, numTracks - 1);
 			console.log('playList.tracks[trackIndex]', playList.tracks[trackIndex]);
 			//var trackUri = playList.tracks[trackIndex].secret_uri;
-			//console.log('trackIndex should be random', trackIndex);
-
 			var secretTokenString = 'secret_token=' + playList.tracks[trackIndex].secret_token;
 			//var trackUriFrag = trackUri.split('https://api.soundcloud.com')[1];
+			//Build url string for streaming private track
 			var trackUriGet = playList.tracks[trackIndex].uri + '.json?' + secretTokenString + '&' + clientIDString;
 			getPlayTrack(trackUriGet, playList);
 		}
 
 		function getPlayTrack(trackUriGet, playList) {
 			$.get(trackUriGet).then(function(result) {
-				$audio.attr('src', result.stream_url + '&' + clientIDString);
-				$audio.on('canplay', function(e) {
-					var seconds = e.currentTarget.duration;
-					console.log('seconds', seconds);
+				$audioOne.attr('src', result.stream_url + '&' + clientIDString);
+				$audioOne.on('canplay', function(e) {
+					e.currentTarget.play();
+					$messageBlock[0].innerHTML = result.title;
 				});
-				$audio.on('ended', function() {
-					selectTrack(playList);
+				$audioOne.on('timeupdate', function(e) {
+					let durationSeconds = e.currentTarget.duration;
+					//console.log('e.currentTarget.currentTime', e.currentTarget.currentTime);
+					let outCue = durationSeconds - 40;
+					console.log('outCue', outCue);
+					console.log('e.currentTarget.currentTime', e.currentTarget.currentTime);
+					if (e.currentTarget.currentTime > outCue) {
+						selectTrack(playList);
+						e.currentTarget.pause();
+						return;
+					}
 				});
+				// $audioOne.on('ended', function() {
+				// 	selectTrack(playList);
+				// });
 			});
 		}
 
