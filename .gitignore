@@ -25,6 +25,8 @@
 
 # Back end
 authenticate.rb
+sc-login.php
+vendor/
 
 # Front end
 .sass-cache/

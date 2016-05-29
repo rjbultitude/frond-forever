@@ -1,8 +1,8 @@
-# Frond Website #
+# Frond Forever #
 
 ## Folder Structure
 
-    |--Frond Website
+    |--Frond
         |-- node_modules (not in repo)
         |-- src
         |-- dist (not in repo)

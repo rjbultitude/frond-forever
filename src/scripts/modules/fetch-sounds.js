@@ -6,6 +6,9 @@ export default class FetchSounds {
 		console.log(context);
 		console.log('SC', SC);
 
+		var username = '/authenticate.rb';
+		console.log('username', username);
+
 		function controlPlayer() {
 			var iframeElement = context[0].querySelector('iframe');
 			console.log('iframeElement', iframeElement);

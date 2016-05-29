@@ -1,5 +1,5 @@
 import $             from 'jquery';
-import FetchSounds from './modules/fetch-sounds';
+import FetchSounds from './modules/test-login';
 
 $(() => {
 
