@@ -1,0 +1,5 @@
+{
+    "require": {
+        "njasm/soundcloud": "dev-master"
+    }
+}
