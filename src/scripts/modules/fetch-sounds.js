@@ -7,8 +7,29 @@ export default class FetchSounds {
 		console.log('SC', SC);
 		var channel = postal.channel();
 
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
+
 		channel.subscribe('dataReady', function(data) {
-			console.log('data', data);
+			var jsonData = JSON.parse(data);
+			//find correct private playlist
+			var foreverPlayList = null;
+			for (var i = 0; i < jsonData.length; i++) {
+				if (jsonData[i].title === 'frond forever') {
+					foreverPlayList = jsonData[i];
+				}
+			}
+			//Get total number of tracks
+			var numTracks = foreverPlayList.tracks.length;
+			//Generate random number for index
+			var trackIndex = getRandomInt(0, numTracks -1);
+			console.log('trackIndex should be random', trackIndex);
+			SC.oEmbed(foreverPlayList.tracks[trackIndex].secret_uri, {
+				auto_play: true
+			}).then(function(embed) {
+				context[0].innerHTML = embed.html;
+			});
 		});
 
 		function controlPlayer() {
@@ -20,26 +41,5 @@ export default class FetchSounds {
 			console.log('widget', widget);
 		}
 
-		SC.initialize({
-			client_id: 'cc047d47f7bd7e5c1452a5284c3d9d88'
-		});
-
-		// SC.get('/playlists/2050462').then(function(playlist) {
-		// 	playlist.tracks.forEach(function(track) {
-		// 		console.log(track.title);
-		// 	});
-		// });
-
-		// SC.stream('/tracks/293').then(function(player) {
-		// 	player.play();
-		// });
-
-		// SC.oEmbed('http://soundcloud.com/frond/steam-train-passes-through-the-valley-north-yorkshire', {
-		// 	auto_play: true
-		// }).then(function(embed) {
-		// 	console.log('oEmbed response: ', embed);
-		// 	context[0].innerHTML = embed.html;
-		// 	controlPlayer();
-		// });
 	}
 }

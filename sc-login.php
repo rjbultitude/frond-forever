@@ -7,7 +7,7 @@ use Njasm\Soundcloud\SoundcloudFacade;
 
 $facade = new SoundcloudFacade($clientID, $clientSecret);
 $facade->userCredentials($username, $password); // on success, access_token is set by default for next requests.
-$response = $facade->get('/me')->request();
+$response = $facade->get('/me/playlists')->request();
 // raw/string body response
 echo $response->bodyRaw();
 // as object
