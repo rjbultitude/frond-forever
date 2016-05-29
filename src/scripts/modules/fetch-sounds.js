@@ -1,10 +1,11 @@
-import SC from 'soundcloud';
-import postal from 'postal';
+import $			from 'jquery';
+import SC 			from 'soundcloud';
+import postal 		from 'postal';
 
 export default class FetchSounds {
 
 	constructor(context) {
-		console.log('SC', SC);
+		var clientID = 'cc047d47f7bd7e5c1452a5284c3d9d88';
 		var channel = postal.channel();
 
 		function getRandomInt(min, max) {
@@ -23,13 +24,32 @@ export default class FetchSounds {
 			//Get total number of tracks
 			var numTracks = foreverPlayList.tracks.length;
 			//Generate random number for index
-			var trackIndex = getRandomInt(0, numTracks -1);
-			console.log('trackIndex should be random', trackIndex);
-			SC.oEmbed(foreverPlayList.tracks[trackIndex].secret_uri, {
-				auto_play: true
-			}).then(function(embed) {
-				context[0].innerHTML = embed.html;
-			});
+			var trackIndex = getRandomInt(0, numTracks - 1);
+			console.log('foreverPlayList.tracks[trackIndex]', foreverPlayList.tracks[trackIndex]);
+			var trackUri = foreverPlayList.tracks[trackIndex].secret_uri;
+			//console.log('trackIndex should be random', trackIndex);
+
+			var clientIDString = 'client_id=' + clientID;
+			var secretTokenString = 'secret_token=' + foreverPlayList.tracks[trackIndex].secret_token;
+			//var trackUriFrag = trackUri.split('https://api.soundcloud.com')[1];
+			var trackUriNow = foreverPlayList.tracks[trackIndex].uri + '.json?' + secretTokenString + '&' + clientIDString
+			var $audio = $('audio');
+			console.log('$audio', $audio);
+			$.get(trackUriNow).then(function(result) {
+					console.log('result', result);
+					$audio.attr('src', result.stream_url + '&' + clientIDString);
+				});
+
+			// SC.stream(streamUri + '&' + clientIDString).then(function(player) {
+			// 	console.log('player', player);
+			// 	player.play();
+			// });
+			// SC.oEmbed(foreverPlayList.tracks[trackIndex].secret_uri, {
+			// 	auto_play: true
+			// }).then(function(embed) {
+			// 	context[0].innerHTML = embed.html;
+			// 	console.log('embed', embed);
+			// });
 		});
 
 		function controlPlayer() {
