@@ -59,3 +59,4 @@ The flag `--save-dev` will save the version number to package.json so that every
 Authenticating without the SoundCloud Connect Screen
 OAuth User Credentials Flow
 https://soundcloud.com/you/apps/frond-forever/edit
+https://github.com/njasm/soundcloud

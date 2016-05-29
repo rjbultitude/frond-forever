@@ -14,4 +14,4 @@ echo $response->bodyRaw();
 echo $response->bodyObject()->id;
 // as array
 $array = $response->bodyArray();
-print_r($array);
+print_r(json_decode($array));

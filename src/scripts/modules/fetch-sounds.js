@@ -1,13 +1,15 @@
 import SC from 'soundcloud';
+import postal from 'postal';
 
 export default class FetchSounds {
 
 	constructor(context) {
-		console.log(context);
 		console.log('SC', SC);
+		var channel = postal.channel();
 
-		var username = '/authenticate.rb';
-		console.log('username', username);
+		channel.subscribe('dataReady', function(data) {
+			console.log('data', data);
+		});
 
 		function controlPlayer() {
 			var iframeElement = context[0].querySelector('iframe');
@@ -19,29 +21,25 @@ export default class FetchSounds {
 		}
 
 		SC.initialize({
-			client_id: 'cc047d47f7bd7e5c1452a5284c3d9d88',
-			redirect_uri: 'http://frondmusic.com/'
+			client_id: 'cc047d47f7bd7e5c1452a5284c3d9d88'
 		});
 
-		// SC.connect({
-		// 	client_id: 'cc047d47f7bd7e5c1452a5284c3d9d88'
-		// }).then(function(sessionData) {
-		// 	console.log('sessionData', sessionData);
-		// }, function(failure) {
-		// 	console.log('failure', failure);
+		// SC.get('/playlists/2050462').then(function(playlist) {
+		// 	playlist.tracks.forEach(function(track) {
+		// 		console.log(track.title);
+		// 	});
 		// });
 
-		SC.oEmbed('http://soundcloud.com/frond/steam-train-passes-through-the-valley-north-yorkshire', {
-			auto_play: true
-		}).then(function(embed) {
-			console.log('oEmbed response: ', embed);
-			context[0].innerHTML = embed.html;
-			controlPlayer();
-		});
+		// SC.stream('/tracks/293').then(function(player) {
+		// 	player.play();
+		// });
 
-
-		// SC.get('/user/183/tracks').then(function(tracks){
-		//  		alert('Latest track: ' + tracks[0].title);
+		// SC.oEmbed('http://soundcloud.com/frond/steam-train-passes-through-the-valley-north-yorkshire', {
+		// 	auto_play: true
+		// }).then(function(embed) {
+		// 	console.log('oEmbed response: ', embed);
+		// 	context[0].innerHTML = embed.html;
+		// 	controlPlayer();
 		// });
 	}
 }

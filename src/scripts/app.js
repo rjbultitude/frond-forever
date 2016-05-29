@@ -1,5 +1,6 @@
 import $             from 'jquery';
-import FetchSounds from './modules/test-login';
+import FetchSounds from './modules/fetch-sounds';
+import TestLogin from './modules/test-login';
 
 $(() => {
 
@@ -7,6 +8,7 @@ $(() => {
 
     if ($fetchSounds.length > 0) {
 
+        new TestLogin($fetchSounds);
         new FetchSounds($fetchSounds);
 
     }

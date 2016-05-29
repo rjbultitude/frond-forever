@@ -1,7 +1,10 @@
+import postal from 'postal';
+
 export default class FetchSounds {
 
 	constructor(context) {
 		console.log(context);
+		var channel = postal.channel();
 
 		function makeRequest(method, url) {
 			return new Promise(function(resolve, reject) {
@@ -29,8 +32,8 @@ export default class FetchSounds {
 		}
 
 		makeRequest('GET', 'sc-login.php').then(function (data) {
-			context[0].innerHTML = JSON.stringify(data);
-			console.log('data', data);
+			//context[0].innerHTML = JSON.stringify(data);
+			channel.publish( 'dataReady', data );
 		});
 	}
 }
