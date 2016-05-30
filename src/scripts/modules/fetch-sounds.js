@@ -1,19 +1,72 @@
-import $ from 'jquery';
-import postal from 'postal';
+import $ 			from 'jquery';
+import postal 		from 'postal';
 //import SC from 'soundcloud';
 
 export default class FetchSounds {
 
-	constructor(context) {
+	constructor() {
 		const clientID = 'cc047d47f7bd7e5c1452a5284c3d9d88';
 		const clientIDString = 'client_id=' + clientID;
 		const channel = postal.channel();
-		const $audioOne = $('[data-bind="audio-one"]');
-		const $audioTwo = $('[data-bind="audio-two"]');
+		const $players = $('[data-bind="players"] audio');
 		const $messageBlock = $('[data-bind="heading"]');
+		const mixTime = 10;
 
 		function getRandomInt(min, max) {
 			return Math.floor(Math.random() * (max - min)) + min;
+		}
+
+		function getCurrentPlayerIndex($players) {
+			for (var i = 0; i < $players.length; i++) {
+				if (!$players[i].paused || $players[i].currentTime) {
+					return $players.eq(i);
+				}
+			}
+			return false;
+		}
+
+		function getTrackStreamUri(track) {
+			//Build url string for streaming private track
+			var secretTokenString = 'secret_token=' + track.secret_token;
+			return track.stream_url + '?' + secretTokenString + '&' + clientIDString;
+		}
+
+		function playTrack(playList) {
+			var currentTrack = selectTrack(playList);
+			var nextTrack = selectTrack(playList);
+			var currTrackStreamUri = getTrackStreamUri(currentTrack);
+			var nextTrackStreamUri = getTrackStreamUri(nextTrack);
+			var currentPlayerIndex = getCurrentPlayerIndex($players);
+			var $currentPlayer = null;
+			var $nextPlayer = null;
+			var cuePoint = false;
+			//First play / neither player is playing
+			if (currentPlayerIndex === false) {
+				$currentPlayer = $players.eq(0);
+				$nextPlayer = $players.eq(1);
+			}
+			$currentPlayer = $players.eq(currentPlayerIndex);
+			$nextPlayer = $players.eq(Math.abs(currentPlayerIndex - 1));
+			
+			$currentPlayer.attr('src', currTrackStreamUri);
+			$nextPlayer.attr('src', nextTrackStreamUri);
+			$currentPlayer.on('canplay', function(e) {
+				e.currentTarget.play();
+				$messageBlock[0].innerHTML = currentTrack.title;
+			});
+			$currentPlayer.on('timeupdate', function(e) {
+				let durationSeconds = e.currentTarget.duration;
+				let outCue = durationSeconds - mixTime;
+				//Play next track at cuepoint
+				if (e.currentTarget.currentTime > outCue) {
+					cuePoint = true;
+					$nextPlayer[0].play();
+				}
+			});
+			$currentPlayer.on('ended', function() {
+				//Recursion
+				playTrack(playList);
+			});
 		}
 
 		function selectTrack(playList) {
@@ -21,50 +74,20 @@ export default class FetchSounds {
 			var numTracks = playList.tracks.length;
 			//Generate random number for index
 			var trackIndex = getRandomInt(0, numTracks - 1);
-			console.log('playList.tracks[trackIndex]', playList.tracks[trackIndex]);
-			//var trackUri = playList.tracks[trackIndex].secret_uri;
-			var secretTokenString = 'secret_token=' + playList.tracks[trackIndex].secret_token;
-			//var trackUriFrag = trackUri.split('https://api.soundcloud.com')[1];
-			//Build url string for streaming private track
-			var trackUriGet = playList.tracks[trackIndex].uri + '.json?' + secretTokenString + '&' + clientIDString;
-			getPlayTrack(trackUriGet, playList);
-		}
-
-		function getPlayTrack(trackUriGet, playList) {
-			$.get(trackUriGet).then(function(result) {
-				$audioOne.attr('src', result.stream_url + '&' + clientIDString);
-				$audioOne.on('canplay', function(e) {
-					e.currentTarget.play();
-					$messageBlock[0].innerHTML = result.title;
-				});
-				$audioOne.on('timeupdate', function(e) {
-					let durationSeconds = e.currentTarget.duration;
-					//console.log('e.currentTarget.currentTime', e.currentTarget.currentTime);
-					let outCue = durationSeconds - 40;
-					console.log('outCue', outCue);
-					console.log('e.currentTarget.currentTime', e.currentTarget.currentTime);
-					if (e.currentTarget.currentTime > outCue) {
-						selectTrack(playList);
-						e.currentTarget.pause();
-						return;
-					}
-				});
-				// $audioOne.on('ended', function() {
-				// 	selectTrack(playList);
-				// });
-			});
+			var selectedTrack = playList.tracks[trackIndex];
+			return selectedTrack;
 		}
 
 		channel.subscribe('dataReady', function(data) {
 			var jsonData = JSON.parse(data);
-			//find correct private playlist
 			var playList = null;
+			//find correct private playlist
 			for (var i = 0; i < jsonData.length; i++) {
 				if (jsonData[i].title === 'frond forever') {
 					playList = jsonData[i];
 				}
 			}
-			selectTrack(playList);
+			playTrack(playList);
 		});
 
 		// function embedPlayer(secret_uri) {
@@ -74,15 +97,6 @@ export default class FetchSounds {
 		// 		context[0].innerHTML = embed.html;
 		// 		console.log('embed', embed);
 		// 	});
-		// }
-
-		// function controlPlayer() {
-		// 	var iframeElement = context[0].querySelector('iframe');
-		// 	console.log('iframeElement', iframeElement);
-		// 	console.log('SC.Widget', SC.Widget);
-		// 	var widget = SC.Widget(iframeElement);
-		// 	widget.pause();
-		// 	console.log('widget', widget);
 		// }
 
 	}

@@ -7,7 +7,8 @@ export default class MakeRequest {
 			xhr.onload = function() {
 				if (this.status >= 200 && this.status < 300) {
 					resolve(xhr.response);
-				} else {
+				} 
+				else {
 					reject({
 						status: this.status,
 						statusText: xhr.statusText

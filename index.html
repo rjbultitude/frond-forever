@@ -9,7 +9,6 @@
     <title>Frond | Forever</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="dist/styles/global.css">
 
 </head>
@@ -20,8 +19,10 @@
         <article class="article-main">
         </article>
     </div>
-    <audio controls src="" data-bind="audio-one"></audio>
-    <audio controls src="" data-bind="audio-two"></audio>
+    <div data-bind="players">
+        <audio controls src=""></audio>
+        <audio controls src=""></audio>
+    </div>
     <div class="footer">
     </div>
     <script type="text/javascript" src="dist/scripts/app.js"></script>
