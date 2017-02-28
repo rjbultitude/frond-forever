@@ -1,20 +1,18 @@
 {
-  "name": "zone-boilerplate",
-  "title": "Zone Boilerplate",
-  "version": "1.6.0",
-  "description": "Front-end boilerplate to kick start all projects at Zone",
+  "name": "frond-forever",
+  "title": "Frond Forever",
+  "version": "1.0.0",
+  "description": "Plays a five hour stream of music that never sounds the same twice",
   "author": {
-    "name": "Zone",
-    "url": "http://thisiszone.com"
+    "name": "RB",
+    "url": "https://github.com/rjbultitude"
   },
   "contributors": [
     "Richard Bultitude",
-    "Mike Simmonds",
-    "Alex Baulch"
   ],
   "repository": {
     "type": "git",
-    "url": "https://zonecode.codebasehq.com/projects/zone/repositories/boilerplate"
+    "url": "https://github.com/rjbultitude/frond-forever"
   },
   "scripts": {
     "dev": "gulp",
